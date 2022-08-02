@@ -35,7 +35,8 @@ namespace EntityFrameworkQueries
 
             // added this in class lecture to see what queries are being generated
             // look at output
-            optionsBuilder.LogTo(message => Debug.WriteLine(message), new[] {DbLoggerCategory.Database.Command.Name});
+
+            optionsBuilder.LogTo(message => Debug.WriteLine(message), new[] {DbLoggerCategory.Query.Name});
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
