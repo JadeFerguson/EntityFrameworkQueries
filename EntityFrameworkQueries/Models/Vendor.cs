@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EntityFrameworkQueries
 {
+    // added this by click on vendor in form1 right click and go to definition
+    [DebuggerDisplay("Name: {VendorName} - {VendorState}")]
     public partial class Vendor
     {
         public Vendor()
