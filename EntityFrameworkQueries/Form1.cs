@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace EntityFrameworkQueries
 {
     public partial class Form1 : Form
@@ -23,7 +25,7 @@ namespace EntityFrameworkQueries
 
         private void btnAllCaliVendors_Click(object sender, EventArgs e)
         {
-            using APContext dbContext = new();
+            APContext dbContext = new();
             List<Vendor> vendorList = dbContext.Vendors
                                        .Where(v => v.VendorState == "CA")
                                        .OrderBy(v => v.VendorName)
@@ -34,5 +36,41 @@ namespace EntityFrameworkQueries
                                         orderby v.VendorName
                                         select v).ToList();
         }
+
+        private void btnSelectSpecificColumns_Click(object sender, EventArgs e)
+        {
+            APContext dbcontext = new();
+
+            // Annonymous type
+            List<VendorLocation> results = (from v in dbcontext.Vendors
+                          select new VendorLocation
+                          {
+                              // added VendorName = before as now it is a explicit type so no need to use var
+                                VendorName = v.VendorName,
+                                VendorState = v.VendorState,
+                                VendorCity = v.VendorCity
+                          }).ToList();
+
+            // String builder is better for concatination for a larger list and strings are mutable
+            StringBuilder displayString = new();
+            foreach (VendorLocation vendor in results)
+            {
+                displayString.AppendLine($"{vendor.VendorName} is in {vendor.VendorCity}");
+
+            }
+
+            // message box does not know how to show a string builder so had to add tostring
+            MessageBox.Show(displayString.ToString());
+        }
     }
+    // want to add a class to represent annonymous type
+    class VendorLocation
+    {
+        public string VendorName { get; set; }
+
+        public string VendorState { get; set; }
+
+        public string VendorCity { get; set; }
+    }
+
 }
