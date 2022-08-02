@@ -62,6 +62,30 @@ namespace EntityFrameworkQueries
             // message box does not know how to show a string builder so had to add tostring
             MessageBox.Show(displayString.ToString());
         }
+
+        private void btnMiscQueries_Click(object sender, EventArgs e)
+        {
+            APContext dbContext = new();
+
+            // Check if something exists
+            bool doesExist = (from v in dbContext.Vendors
+                             where v.VendorState == "WA"
+                             select v).Any(); // all the aggregates have methods such as min max and sum
+
+            // Get number of Invoices
+            int invoiceCount = (from invoice in dbContext.Invoices
+                                select invoice).Count(); // returns the number of entity
+
+            // Query a single vendor
+            Vendor ? singleVendor = (from v in dbContext.Vendors
+                                     where v.VendorName == "IBM"
+                                     select v).SingleOrDefault();
+
+            if (singleVendor != null)
+            {
+                // Do something with the Vendor Object
+            }
+        }
     }
     // want to add a class to represent annonymous type
     class VendorLocation
